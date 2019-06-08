@@ -1,6 +1,6 @@
 {
   "projects": {
-    "default": "the-programmys-dev"
+    "default": "the-programmys-dev",
     "production": "the-programmys"
   }
 }
