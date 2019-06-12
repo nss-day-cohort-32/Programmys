@@ -1,5 +1,6 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
+const axios = require('axios');
 
 admin.initializeApp();
 
@@ -14,7 +15,20 @@ exports.onAwardCreated = functions.firestore
       .get();
     const cohort = cohortSnapshot.data();
 
-    const message = `${award.createdBy} has added a new ProGrammys award for ${cohort.name}: ${award.name}`;
-    console.log(message);
+    const text = `${award.createdBy} has added a new ProGrammys award for ${cohort.name}\n*${award.name.toUpperCase()}*`;
+    const attachments = [
+      {
+        fallback: 'Vote at https://the-programmys.web.app',
+        actions: [
+          {
+            type: 'button',
+            text: 'Vote ✔',
+            url: 'https://the-programmys.web.app',
+            style: 'primary'
+          }
+        ]
+      }
+    ];
 
+    return axios.post(process.env.slackUrl, { text, attachments });
   });
