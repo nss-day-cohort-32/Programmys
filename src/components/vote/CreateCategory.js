@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-
+/* eslint-disable */
 class CreateCategory extends Component {
     render() {
         return (

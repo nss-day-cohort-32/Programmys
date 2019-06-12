@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import Login from './Login'
-import Register from './Register'
 import {Link} from 'react-router-dom'
 
+import Login from './Login'
+import Register from './Register'
 
+/* eslint-disable */
 class Auth extends Component {
     render() {
         return (

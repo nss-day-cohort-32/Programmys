@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-
+/* eslint-disable */
 class Register extends Component {
     render() {
         return (
