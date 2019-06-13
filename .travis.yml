@@ -5,7 +5,8 @@ branches:
   only:
   - master
 install:
-- npm install
+  - cd ./functions && npm install && cd ..
+  - npm install
 cache:
   directories:
   - node_modules
