@@ -34,3 +34,27 @@ exports.onAwardCreated = functions.firestore
     return axios.post(slackURL, slackPayload)
       .then(({ data }) => data);
   });
+
+exports.onVoteAdded = functions.firestore
+  .document('cohorts/{cohortId}/awards/{awardId}/votes/{voteId}')
+  .onCreate(async (voteSnapshot, context) => {
+    const { cohortId, awardId } = context.params;
+    const { voterId } = voteSnapshot.data();
+
+    // update total vote count
+    const awardRef = admin.firestore().doc(`cohorts/${cohortId}/awards/${awardId}`);
+    const awardSnapshot = await awardRef.get();
+    const award = awardSnapshot.data();
+    const updatedCount = (award.totalVotes || 0) + 1;
+    const awardUpdatePromise = awardRef.update({ totalVotes: updatedCount });
+
+    // add awardId to users list of awards voted for
+    const userRef = admin.firestore().doc(`users/${voterId}`);
+    const userSnapshot = await userRef.get();
+    const user = userSnapshot.data();
+    const userVotes = user.votes || [];
+    const updatedUserVotes = [awardId, ...userVotes];
+    const userUpdatePromise = userRef.update({ votes: updatedUserVotes });
+
+    return Promise.all([awardUpdatePromise, userUpdatePromise]);
+  });
