@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import VoteList from './VoteList';
 import CreateCategory from './CreateCategory';
+import DropdownExampleSelection from './Dropdown';
 
 /* eslint-disable */
 class Vote extends Component {
@@ -9,6 +10,7 @@ class Vote extends Component {
       <>
         <CreateCategory />
         <VoteList />
+        <DropdownExampleSelection />
       </>
     );
   }
