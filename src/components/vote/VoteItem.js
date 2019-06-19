@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Card, Image } from 'semantic-ui-react';
 import DropdownExampleSelection from './Dropdown';
+import awardIcon from '../../images/grammys.png';
 
 
 /* eslint-disable */
@@ -11,9 +12,9 @@ class VoteItem extends Component {
 
       <Card className="centered">
         <Card.Content>
-          <Image floated='right' size='mini' src='/images/avatar/large/steve.jpg' />
+          <Image floated='right' size='mini' src={awardIcon} />
           <Card.Header>{award.name}</Card.Header>
-          <Card.Meta>{award.createdBy}</Card.Meta>
+          <Card.Meta>created by: {award.createdBy}</Card.Meta>
           <Card.Description>
             {award.description}
           </Card.Description>
