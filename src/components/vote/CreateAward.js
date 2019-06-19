@@ -13,8 +13,7 @@ import {
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 
-/* eslint-disable */
-class CreateCategory extends Component {
+class CreateAward extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -38,12 +37,22 @@ class CreateCategory extends Component {
       description,
     } = this.state;
 
-    const id = Date.now().toString()
-    const createdAt = Date.now()
-    const votingEndDate = Date.now() + 10
+    function addDaysToDate(date, days) {
+      const result = new Date(date);
+      result.setDate(result.getDate() + days);
+      return result;
+    }
+
+    const date = new Date();
+    const fDate = addDaysToDate(date, 10);
+    const timestamp = firebase.firestore.Timestamp.fromDate(date);
+    const futureDate = firebase.firestore.Timestamp.fromDate(fDate);
+
+    const createdAt = timestamp;
+    const votingEndDate = futureDate;
     // update below with user from session
-    const createdBy = "Bryan Nilsen"
-    const createdById = "sfS8grOXQviDhLdttxNC"
+    const createdBy = 'Bryan Nilsen';
+    const createdById = 'sfS8grOXQviDhLdttxNC';
     // where are votes recorded?
     const payload = {
       name,
@@ -55,9 +64,9 @@ class CreateCategory extends Component {
     };
 
     // cohort Id to be set dynamically based on user cohort
-    const cohort = "D32"
+    const cohort = 'D32';
 
-    this.db.collection(`cohorts/${cohort}/awards`).doc(id)
+    this.db.collection(`cohorts/${cohort}/awards`).doc()
       .set(payload)
       .then(() => history.push('/'));
   }
@@ -109,4 +118,4 @@ class CreateCategory extends Component {
   }
 }
 
-export default withRouter(CreateCategory);
+export default withRouter(CreateAward);
