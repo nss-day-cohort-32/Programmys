@@ -35,17 +35,19 @@ class Login extends Component {
     const { cohortOptions, cohortId } = this.state;
     return (
       <>
-        <h2>Select Your Cohort</h2>
-        <Dropdown
-          onChange={(_evt, data) => { this.setState({ cohortId: data.value }); }}
-          id="cohort-select"
-          placeholder="Select Friend"
-          fluid
-          selection
-          options={cohortOptions}
-        />
-        <Button id="login-btn" className="pink">Login</Button>
-        <p>{cohortId}</p>
+        <section className="auth_wrapper">
+          <h2>Select Your Cohort</h2>
+          <Dropdown
+            onChange={(_evt, data) => { this.setState({ cohortId: data.value }); }}
+            id="cohort-select"
+            placeholder="Select Cohort"
+            fluid
+            selection
+            options={cohortOptions}
+          />
+          <Button id="login-btn" className="pink btn_margin">Sign in with GitHub</Button>
+          <p>{cohortId}</p>
+        </section>
       </>
     );
   }

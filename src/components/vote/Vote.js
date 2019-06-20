@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
 import VoteList from './VoteList';
-import CreateCategory from './CreateCategory';
-import DropdownExampleSelection from './Dropdown';
+import CreateAward from './CreateAward';
 
 /* eslint-disable */
 class Vote extends Component {
   render() {
     return (
       <>
-        <CreateCategory />
+        <CreateAward />
         <VoteList />
-        <DropdownExampleSelection />
       </>
     );
   }

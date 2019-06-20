@@ -13,7 +13,7 @@ class AppViews extends Component {
         <Route exact path="/" render={(props) => {
           return <Auth {...props} />
         }} />
-        <Route exact path="/vote" render={(props) => {
+        <Route exact path="/vote/:cohortId" render={(props) => {
           return <Vote {...props} />
         }} />
         <Route path="/admin" render={(props) => {

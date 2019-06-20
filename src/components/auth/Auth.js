@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
 import Login from './Login';
 
@@ -9,7 +9,7 @@ class Auth extends Component {
     return (
       <>
         <Login />
-        <Link to="vote/">Vote Now</Link>
+        {/* <Link to="vote/">Vote Now</Link> */}
       </>
     );
   }
