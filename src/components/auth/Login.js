@@ -45,8 +45,14 @@ class Login extends Component {
             selection
             options={cohortOptions}
           />
-          <Button id="login-btn" className="pink btn_margin">Sign in with GitHub</Button>
-          <p>{cohortId}</p>
+          <Button
+            id="login-btn"
+            disabled={!cohortId}
+            color="pink"
+          >
+            Sign in with GitHub
+
+          </Button>
         </section>
       </>
     );
