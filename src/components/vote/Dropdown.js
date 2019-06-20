@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Dropdown } from 'semantic-ui-react';
 
-class DropdownExampleSelection extends Component {
+class DropdownSelection extends Component {
   render() {
     const { voters } = this.props;
     const options = voters.map((voter) => {
@@ -24,4 +24,4 @@ class DropdownExampleSelection extends Component {
   }
 }
 
-export default DropdownExampleSelection;
+export default DropdownSelection;

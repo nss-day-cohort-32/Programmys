@@ -1,7 +1,7 @@
 import * as firebase from 'firebase/app';
 import React, { Component } from 'react';
 import { Button, Card, Image } from 'semantic-ui-react';
-import DropdownExampleSelection from './Dropdown';
+import DropdownSelection from './Dropdown';
 import awardIcon from '../../images/grammys.png';
 import 'firebase/firestore';
 import './Vote.css';
@@ -15,8 +15,7 @@ class VoteItem extends Component {
   }
 
   componentDidMount() {
-    const db = firebase.firestore();
-    db.collection('users').get()
+    this.db.collection('users').get()
       .then((querySnapshot) => {
         const voters = querySnapshot.docs.map(doc => ({
           ...doc.data(),
@@ -46,7 +45,7 @@ class VoteItem extends Component {
         </Card.Content>
         <Card.Content extra>
           <div className="mrgn_bt">
-            <DropdownExampleSelection key={award.id} voters={voters} />
+            <DropdownSelection key={award.id} voters={voters} />
           </div>
           <div>
             <Button className="ui fluid button positive">
