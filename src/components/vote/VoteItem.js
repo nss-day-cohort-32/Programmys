@@ -4,6 +4,7 @@ import { Button, Card, Image } from 'semantic-ui-react';
 import DropdownExampleSelection from './Dropdown';
 import awardIcon from '../../images/grammys.png';
 import 'firebase/firestore';
+import './Vote.css';
 
 
 class VoteItem extends Component {
@@ -44,11 +45,11 @@ class VoteItem extends Component {
           </Card.Description>
         </Card.Content>
         <Card.Content extra>
-          <div>
+          <div className="mrgn_bt">
             <DropdownExampleSelection key={award.id} voters={voters} />
           </div>
-          <div className="ui fluid button">
-            <Button basic color="green">
+          <div>
+            <Button className="ui fluid button positive">
               Vote
             </Button>
           </div>

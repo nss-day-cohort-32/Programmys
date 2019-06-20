@@ -27,7 +27,7 @@ class VoteList extends Component {
     const { awards } = this.state;
     return (
       <>
-        <h2>Show The Vote Items List</h2>
+        <h2>Vote Items</h2>
         {awards.map(award => <VoteItem key={award.id} award={award} />)}
       </>
     );
