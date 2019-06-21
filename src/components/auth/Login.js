@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import { Dropdown, Button } from 'semantic-ui-react';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
+import 'firebase/auth';
 
 
 class Login extends Component {
@@ -11,11 +13,17 @@ class Login extends Component {
       cohortOptions: [],
       cohortId: null,
     };
+
+    this.db = firebase.firestore();
+    this.auth = firebase.auth();
+    this.githubProvider = new firebase.auth.GithubAuthProvider();
+
+    this.signIn = this.signIn.bind(this);
+    this.builduser = this.builduser.bind(this);
   }
 
   componentDidMount() {
-    const db = firebase.firestore();
-    db.collection('cohorts').get()
+    this.db.collection('cohorts').get()
       .then((querySnapshot) => {
         const cohorts = querySnapshot.docs.map((doc) => {
           const cohort = doc.data();
@@ -30,6 +38,41 @@ class Login extends Component {
       });
   }
 
+  builduser(githubData) {
+    const defaults = { isStudent: true, isInstructor: false };
+    const { cohortId } = this.state;
+    const { displayName, email } = githubData.user;
+    const { profile } = githubData.additionalUserInfo;
+
+    return {
+      ...defaults,
+      cohortId,
+      displayName,
+      email,
+      photoUrl: profile.avatar_url,
+    };
+  }
+
+  signIn() {
+    let githubCredentials;
+
+    this.auth.signInWithPopup(this.githubProvider)
+      .then((credentials) => {
+        githubCredentials = credentials;
+        const { uid } = githubCredentials.user;
+        const userRef = this.db.collection('users').doc(uid);
+        return userRef.get();
+      }).then((userSnapshot) => {
+        if (userSnapshot.exists) return;
+        const user = this.builduser(githubCredentials);
+        userSnapshot.ref.set(user);
+      })
+      .then(() => {
+        const { history } = this.props;
+        const { cohortId } = this.state;
+        history.push(`vote/${cohortId}`);
+      });
+  }
 
   render() {
     const { cohortOptions, cohortId } = this.state;
@@ -45,12 +88,18 @@ class Login extends Component {
             selection
             options={cohortOptions}
           />
-          <Button id="login-btn" className="pink btn_margin">Sign in with GitHub</Button>
-          <p>{cohortId}</p>
+          <Button
+            id="login-btn"
+            disabled={!cohortId}
+            color="pink"
+            className="btn_margin"
+            content="Sign in with GitHub"
+            onClick={this.signIn}
+          />
         </section>
       </>
     );
   }
 }
 
-export default Login;
+export default withRouter(Login);
