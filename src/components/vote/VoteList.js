@@ -22,13 +22,23 @@ class VoteList extends Component {
       });
   }
 
+  getUnvotedAwards() {
+    const { awards } = this.state;
+    console.log('AWARDS', awards);
+    return awards.filter((award) => {
+      const { currentUser } = this.props;
+      return !currentUser.votes
+        || !currentUser.votes.find(userVoted => userVoted === award.id);
+    });
+  }
 
   render() {
-    const { awards } = this.state;
+    //
+    const unvotedAwards = this.getUnvotedAwards();
     return (
       <>
-        <h2>Vote Items</h2>
-        {awards.map(award => <VoteItem key={award.id} award={award} />)}
+        <h1>Awards</h1>
+        {unvotedAwards.map(award => <VoteItem key={award.id} award={award} />)}
       </>
     );
   }

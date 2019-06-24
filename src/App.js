@@ -6,7 +6,6 @@ import 'firebase/firestore';
 
 import './App.css';
 import AppViews from './components/AppViews';
-import Nav from './components/nav/Nav';
 
 
 class App extends Component {
@@ -19,24 +18,22 @@ class App extends Component {
 
     this.db = firebase.firestore();
 
-    // quick explanation what's happening here
-    // how does firebase.auth know state has changed?
     firebase.auth().onAuthStateChanged((user) => {
-      // how is userLoaded true if no user?
       if (!user) {
         this.setState({
           currentUser: null,
           userLoaded: true,
         });
+        return;
       }
-
-      // this always runs regardless if no user, and sets state?
       this.db.collection('users')
         .doc(user.uid)
         .get()
         .then((userSnapshot) => {
+          const userData = userSnapshot.data();
+          userData.id = userSnapshot.id;
           this.setState({
-            currentUser: userSnapshot.data(),
+            currentUser: userData,
             userLoaded: true,
           });
         });
@@ -50,7 +47,6 @@ class App extends Component {
         <div className="App">
           {userLoaded ? (
             <>
-              <Nav currentUser={currentUser} />
               <AppViews currentUser={currentUser} />
             </>
           ) : null
