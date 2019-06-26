@@ -56,18 +56,17 @@ class Login extends Component {
 
   signIn() {
     const { setCurrentUser } = this.props;
-    let githubCredentials;
     let profileUser;
 
     this.auth.signInWithPopup(this.githubProvider)
-      .then((credentials) => {
-        githubCredentials = credentials;
+      .then((githubCredentials) => {
         const { uid } = githubCredentials.user;
         const userRef = this.db.collection('users').doc(uid);
-        return userRef.get();
-      }).then((userSnapshot) => {
-        if (userSnapshot.exists) return null;
         profileUser = this.builduser(githubCredentials);
+        return userRef.get();
+      })
+      .then((userSnapshot) => {
+        if (userSnapshot.exists) return null;
         return userSnapshot.ref.set(profileUser);
       })
       .then(() => {
