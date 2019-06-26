@@ -8,10 +8,12 @@ import AdminViews from './admin/AdminViews';
 class AppViews extends Component {
 
   render() {
+    const { setCurrentUser } = this.props;
+
     return (
       <React.Fragment>
         <Route exact path="/" render={(props) => {
-          return <Auth {...props} />
+          return <Auth {...props} setCurrentUser={setCurrentUser} />
         }} />
         <Route path="/vote/" render={(props) => {
           return <Vote currentUser={this.props.currentUser} {...props} />

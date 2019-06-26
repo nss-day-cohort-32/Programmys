@@ -4,6 +4,7 @@ import { Dropdown, Button } from 'semantic-ui-react';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
+import { storeUser } from '../../modules/userManager';
 
 
 class Login extends Component {
@@ -54,7 +55,9 @@ class Login extends Component {
   }
 
   signIn() {
+    const { setCurrentUser } = this.props;
     let githubCredentials;
+    let profileUser;
 
     this.auth.signInWithPopup(this.githubProvider)
       .then((credentials) => {
@@ -63,12 +66,14 @@ class Login extends Component {
         const userRef = this.db.collection('users').doc(uid);
         return userRef.get();
       }).then((userSnapshot) => {
-        if (userSnapshot.exists) return;
-        const user = this.builduser(githubCredentials);
-        userSnapshot.ref.set(user);
+        if (userSnapshot.exists) return null;
+        profileUser = this.builduser(githubCredentials);
+        return userSnapshot.ref.set(profileUser);
       })
       .then(() => {
         const { history } = this.props;
+        storeUser(profileUser);
+        setCurrentUser(profileUser);
         history.push('vote/');
       });
   }
