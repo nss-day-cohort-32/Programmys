@@ -24,7 +24,6 @@ class VoteList extends Component {
 
   getUnvotedAwards() {
     const { awards } = this.state;
-    console.log('AWARDS', awards);
     return awards.filter((award) => {
       const { currentUser } = this.props;
       return !currentUser.votes
