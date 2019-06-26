@@ -5,5 +5,7 @@
 
 .cohort_bar {
   background: rgb(236, 129, 7);
+  color: rgba(255,
+    255, 255, 0.9) !important;
   padding: 5px;
 }

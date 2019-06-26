@@ -1,6 +1,8 @@
 import * as firebase from 'firebase/app';
 import React, { Component } from 'react';
-import { Button, Card, Image } from 'semantic-ui-react';
+import {
+  Button, Card, Image,
+} from 'semantic-ui-react';
 import DropdownSelection from './Dropdown';
 import awardIcon from '../../images/grammys.png';
 import 'firebase/firestore';
@@ -47,6 +49,7 @@ class VoteItem extends Component {
           <div className="mrgn_bt">
             <DropdownSelection key={award.id} voters={voters} />
           </div>
+          <div className="ui input fluid mrgn_bt"><input type="text" placeholder="tell us why..." /></div>
           <div>
             <Button className="ui fluid button positive">
               Vote

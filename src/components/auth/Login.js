@@ -69,8 +69,7 @@ class Login extends Component {
       })
       .then(() => {
         const { history } = this.props;
-        const { cohortId } = this.state;
-        history.push(`vote/${cohortId}`);
+        history.push('vote/');
       });
   }
 

@@ -31,7 +31,7 @@ class CreateAward extends Component {
   }
 
   submit() {
-    const { history } = this.props;
+    const { history, currentUser } = this.props;
     const {
       name,
       description,
@@ -50,10 +50,9 @@ class CreateAward extends Component {
 
     const createdAt = timestamp;
     const votingEndDate = futureDate;
-    // update below with user from session
-    const createdBy = 'Bryan Nilsen';
-    const createdById = 'sfS8grOXQviDhLdttxNC';
-    // where are votes recorded?
+    const createdBy = currentUser.displayName;
+    const createdById = currentUser.id;
+
     const payload = {
       name,
       description,
@@ -63,12 +62,11 @@ class CreateAward extends Component {
       votingEndDate,
     };
 
-    // cohort Id to be set dynamically based on user cohort
-    const cohort = 'D32';
+    const cohort = currentUser.cohortId;
 
     this.db.collection(`cohorts/${cohort}/awards`).doc()
       .set(payload)
-      .then(() => history.push('/'));
+      .then(() => history.push('/vote'));
   }
 
   render() {
