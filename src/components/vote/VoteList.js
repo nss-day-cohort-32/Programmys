@@ -32,7 +32,6 @@ class VoteList extends Component {
   }
 
   submitVote(awardId, voteObject) {
-    console.log('Voted', awardId, voteObject);
     this.db.collection(`cohorts/D32/awards/${awardId}/votes`).doc().set(voteObject);
   }
 
@@ -42,7 +41,14 @@ class VoteList extends Component {
     return (
       <>
         <h1>Awards</h1>
-        {unvotedAwards.map(award => <VoteItem key={award.id} award={award} submitVote={this.submitVote} currentUser={currentUser} />)}
+        {unvotedAwards.map(award => (
+          <VoteItem
+            key={award.id}
+            award={award}
+            submitVote={this.submitVote}
+            currentUser={currentUser}
+          />
+        ))}
       </>
     );
   }
