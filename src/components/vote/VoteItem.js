@@ -1,9 +1,8 @@
 import * as firebase from 'firebase/app';
 import React, { Component } from 'react';
 import {
-  Button, Card, Image,
+  Button, Card, Image, Dropdown,
 } from 'semantic-ui-react';
-import DropdownSelection from './Dropdown';
 import awardIcon from '../../images/grammys.png';
 import 'firebase/firestore';
 import './Vote.css';
@@ -29,13 +28,14 @@ class VoteItem extends Component {
       });
   }
 
-  setDropdownData(userDropdownData) {
+  setDropdownData(_evt, userDropdownData) {
     this.setState({ userDropdownData });
   }
 
   handleFieldChange(evt) {
     this.setState({ notes: evt.target.value });
   }
+
 
   buildAndSubmitVote(awardId) {
     const { submitVote, currentUser } = this.props;
@@ -52,6 +52,15 @@ class VoteItem extends Component {
   render() {
     const { award } = this.props;
     const { voters } = this.state;
+    const options = voters.map((voter) => {
+      const option = {};
+      option.key = voter.id;
+      option.text = voter.displayName;
+      option.value = voter.id;
+      option.image = { avatar: true, src: voter.photoUrl };
+      return option;
+    });
+
     return (
 
       <Card className="centered">
@@ -69,11 +78,16 @@ class VoteItem extends Component {
         </Card.Content>
         <Card.Content extra>
           <div className="mrgn_bt">
-            <DropdownSelection
+
+            <Dropdown
               key={award.id}
-              voters={voters}
-              setDropdownData={this.setDropdownData}
+              onChange={this.setDropdownData}
+              placeholder="Select Recipient"
+              fluid
+              selection
+              options={options}
             />
+
           </div>
           <div className="ui input fluid mrgn_bt"><input onChange={this.handleFieldChange} type="text" placeholder="tell us why..." /></div>
           <div>
