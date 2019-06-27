@@ -13,14 +13,17 @@ class Login extends Component {
     this.state = {
       cohortOptions: [],
       cohortId: null,
+      needsProfileInfo: false,
     };
 
     this.db = firebase.firestore();
     this.auth = firebase.auth();
     this.githubProvider = new firebase.auth.GithubAuthProvider();
+    this.githubCredentials = null;
 
     this.signIn = this.signIn.bind(this);
     this.builduser = this.builduser.bind(this);
+    this.createUser = this.createUser.bind(this);
   }
 
   componentDidMount() {
@@ -55,22 +58,38 @@ class Login extends Component {
   }
 
   signIn() {
-    const { setCurrentUser } = this.props;
+    const { setCurrentUser, history } = this.props;
     let profileUser;
 
     this.auth.signInWithPopup(this.githubProvider)
-      .then((githubCredentials) => {
-        const { uid } = githubCredentials.user;
+      .then((credentials) => {
+        this.githubCredentials = credentials;
+        const { uid } = credentials.user;
         const userRef = this.db.collection('users').doc(uid);
-        profileUser = this.builduser(githubCredentials);
         return userRef.get();
       })
       .then((userSnapshot) => {
-        if (userSnapshot.exists) return null;
-        return userSnapshot.ref.set(profileUser);
-      })
+        if (!userSnapshot.exists) {
+          this.setState({ needsProfileInfo: true });
+          return;
+        }
+
+        profileUser = userSnapshot.data();
+        storeUser(profileUser);
+        setCurrentUser(profileUser);
+        history.push('vote/');
+      });
+  }
+
+  createUser() {
+    const { setCurrentUser, history } = this.props;
+    const profileUser = this.builduser(this.githubCredentials);
+    const userRef = this.db
+      .collection('users')
+      .doc(this.githubCredentials.user.uid);
+
+    userRef.set(profileUser)
       .then(() => {
-        const { history } = this.props;
         storeUser(profileUser);
         setCurrentUser(profileUser);
         history.push('vote/');
@@ -78,27 +97,45 @@ class Login extends Component {
   }
 
   render() {
-    const { cohortOptions, cohortId } = this.state;
+    const { cohortOptions, cohortId, needsProfileInfo } = this.state;
     return (
       <>
         <section className="auth_wrapper">
-          <h2>Select Your Cohort</h2>
-          <Dropdown
-            onChange={(_evt, data) => { this.setState({ cohortId: data.value }); }}
-            id="cohort-select"
-            placeholder="Select Cohort"
-            fluid
-            selection
-            options={cohortOptions}
-          />
-          <Button
-            id="login-btn"
-            disabled={!cohortId}
-            color="pink"
-            className="btn_margin"
-            content="Sign in with GitHub"
-            onClick={this.signIn}
-          />
+          {
+            needsProfileInfo ? (
+              <Dropdown
+                onChange={(_evt, data) => { this.setState({ cohortId: data.value }); }}
+                id="cohort-select"
+                placeholder="Select Cohort"
+                fluid
+                selection
+                options={cohortOptions}
+              />
+            ) : null
+          }
+          {
+            !needsProfileInfo
+              ? (
+                <Button
+                  id="login-btn"
+                  color="pink"
+                  className="btn_margin"
+                  content="Sign in with GitHub"
+                  onClick={this.signIn}
+                />
+              )
+              : (
+                <Button
+                  id="create-account-btn"
+                  color="green"
+                  className="btn_margin"
+                  content="Begin Voting"
+                  disabled={!cohortId}
+                  onClick={this.createUser}
+                />
+              )
+
+          }
         </section>
       </>
     );
