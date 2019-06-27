@@ -11,6 +11,7 @@ class VoteList extends Component {
     this.submitVote = this.submitVote.bind(this);
   }
 
+
   componentDidMount() {
     this.db.collection('cohorts/D32/awards').get()
       .then((querySnapshot) => {
@@ -22,6 +23,7 @@ class VoteList extends Component {
       });
   }
 
+
   getUnvotedAwards() {
     const { awards } = this.state;
     return awards.filter((award) => {
@@ -31,13 +33,25 @@ class VoteList extends Component {
     });
   }
 
+  getVotedAwards() {
+    const { awards } = this.state;
+    return awards.filter((award) => {
+      const { currentUser } = this.props;
+      return currentUser.votes.find(userVoted => userVoted === award.id);
+    });
+  }
+
   submitVote(awardId, voteObject) {
+    const { updateCurrentUserVote } = this.props;
     this.db.collection(`cohorts/D32/awards/${awardId}/votes`).doc().set(voteObject);
+    updateCurrentUserVote(awardId);
   }
 
   render() {
     const unvotedAwards = this.getUnvotedAwards();
+    // const votedAwards = this.getVotedAwards();
     const { currentUser } = this.props;
+
     return (
       <>
         <h1>Awards</h1>
@@ -49,6 +63,15 @@ class VoteList extends Component {
             currentUser={currentUser}
           />
         ))}
+        {/* <h2>Vote history</h2>
+        {votedAwards.map(award => (
+          <VoteItem
+            key={award.id}
+            award={award}
+            submitVote={this.submitVote}
+            currentUser={currentUser}
+          />
+        ))} */}
       </>
     );
   }

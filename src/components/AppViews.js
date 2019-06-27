@@ -14,7 +14,7 @@ class AppViews extends Component {
           return <Auth {...props} />
         }} />
         <Route path="/vote/" render={(props) => {
-          return <Vote currentUser={this.props.currentUser} {...props} />
+          return <Vote currentUser={this.props.currentUser} updateCurrentUserVote={this.props.updateCurrentUserVote} {...props} />
         }} />
         <Route path="/admin" render={(props) => {
           return <AdminViews {...props} />

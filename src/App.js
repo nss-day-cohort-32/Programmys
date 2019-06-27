@@ -17,6 +17,7 @@ class App extends Component {
     };
 
     this.db = firebase.firestore();
+    this.updateCurrentUserVote = this.updateCurrentUserVote.bind(this);
 
     firebase.auth().onAuthStateChanged((user) => {
       if (!user) {
@@ -40,6 +41,13 @@ class App extends Component {
     });
   }
 
+  updateCurrentUserVote(awardId) {
+    const { currentUser } = this.state;
+    const newUserState = { ...currentUser };
+    newUserState.votes.push(awardId);
+    this.setState({ currentUser: newUserState });
+  }
+
   render() {
     const { currentUser, userLoaded } = this.state;
     return (
@@ -47,7 +55,10 @@ class App extends Component {
         <div className="App">
           {userLoaded ? (
             <>
-              <AppViews currentUser={currentUser} />
+              <AppViews
+                currentUser={currentUser}
+                updateCurrentUserVote={this.updateCurrentUserVote}
+              />
             </>
           ) : null
           }
