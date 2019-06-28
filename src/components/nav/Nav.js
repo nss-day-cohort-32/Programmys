@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import {
   Header, Image,
 } from 'semantic-ui-react';
+import { removeUser } from '../../modules/userManager';
 
 class Nav extends Component {
   constructor(props) {
@@ -14,6 +15,8 @@ class Nav extends Component {
       cohort: {},
     };
     this.db = firebase.firestore();
+
+    this.logout = this.logout.bind(this);
   }
 
   componentDidMount() {
@@ -24,6 +27,12 @@ class Nav extends Component {
       });
   }
 
+  logout() {
+    const { setCurrentUser } = this.props;
+    setCurrentUser(null);
+    removeUser();
+  }
+
 
   render() {
     const { cohort } = this.state;
@@ -32,7 +41,13 @@ class Nav extends Component {
         <div className="nav">
           <ul>
             <li>NSS</li>
-            <li><Link to="/">Logout</Link></li>
+            {
+              /* I'm ignoring eslint a11y rules for now
+              because I'm assuming Bryan
+              is going to change the nav */
+            }
+            {/* eslint-disable-next-line */}
+            <li onClick={this.logout}>Logout</li>
             <li><Link to="/vote">Vote</Link></li>
             <li><Link to="/vote/addAward">Add Award</Link></li>
           </ul>
