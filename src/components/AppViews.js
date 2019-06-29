@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, withRouter } from 'react-router-dom';
+import { Route, withRouter, Redirect } from 'react-router-dom';
 import Auth from './auth/Auth';
 import Vote from './vote/Vote';
 import AdminViews from './admin/AdminViews';
@@ -8,13 +8,27 @@ import AdminViews from './admin/AdminViews';
 class AppViews extends Component {
 
   render() {
+    const { setCurrentUser, currentUser } = this.props;
+
     return (
       <React.Fragment>
         <Route exact path="/" render={(props) => {
-          return <Auth {...props} />
+          return !currentUser ? (
+            <Auth {...props} setCurrentUser={setCurrentUser} />
+          ) : (
+              <Redirect to="/vote" />
+            )
         }} />
         <Route path="/vote/" render={(props) => {
-          return <Vote currentUser={this.props.currentUser} updateCurrentUserVote={this.props.updateCurrentUserVote} {...props} />
+          return currentUser ? (
+            <Vote
+              currentUser={currentUser} {...props}
+              setCurrentUser={setCurrentUser}
+              updateCurrentUserVote={this.props.updateCurrentUserVote}
+            />
+          ) : (
+              <Redirect to="/" />
+            )
         }} />
         <Route path="/admin" render={(props) => {
           return <AdminViews {...props} />

@@ -1,44 +1,17 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
-
-import './App.css';
+import { getUser } from './modules/userManager';
 import AppViews from './components/AppViews';
-
+import './App.css';
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      currentUser: null,
-      userLoaded: false,
+      currentUser: getUser(),
     };
-
-    this.db = firebase.firestore();
-    this.updateCurrentUserVote = this.updateCurrentUserVote.bind(this);
-
-    firebase.auth().onAuthStateChanged((user) => {
-      if (!user) {
-        this.setState({
-          currentUser: null,
-          userLoaded: true,
-        });
-        return;
-      }
-      this.db.collection('users')
-        .doc(user.uid)
-        .get()
-        .then((userSnapshot) => {
-          const userData = userSnapshot.data();
-          userData.id = userSnapshot.id;
-          this.setState({
-            currentUser: userData,
-            userLoaded: true,
-          });
-        });
-    });
   }
 
   updateCurrentUserVote(awardId) {
@@ -51,19 +24,15 @@ class App extends Component {
   }
 
   render() {
-    const { currentUser, userLoaded } = this.state;
+    const { currentUser } = this.state;
     return (
       <Router>
         <div className="App">
-          {userLoaded ? (
-            <>
-              <AppViews
-                currentUser={currentUser}
-                updateCurrentUserVote={this.updateCurrentUserVote}
-              />
-            </>
-          ) : null
-          }
+          <AppViews
+            currentUser={currentUser}
+            setCurrentUser={user => this.setState({ currentUser: user })}
+            updateCurrentUserVote={this.updateCurrentUserVote}
+          />
         </div>
       </Router>
     );
