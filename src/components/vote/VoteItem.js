@@ -12,8 +12,10 @@ import './Vote.css';
 class VoteItem extends Component {
   constructor(props) {
     super(props);
-    this.state = { voters: [] };
+    this.state = { voters: [], notes: '' };
     this.db = firebase.firestore();
+    this.setDropdownData = this.setDropdownData.bind(this);
+    this.handleFieldChange = this.handleFieldChange.bind(this);
   }
 
   componentDidMount() {
@@ -26,6 +28,26 @@ class VoteItem extends Component {
         this.setState({ voters });
       });
   }
+
+  setDropdownData(userDropdownData) {
+    this.setState({ userDropdownData });
+  }
+
+  handleFieldChange(evt) {
+    this.setState({ notes: evt.target.value });
+  }
+
+  buildAndSubmitVote(awardId) {
+    const { submitVote, currentUser } = this.props;
+    const { userDropdownData, notes } = this.state;
+    const voteObject = {
+      nomineeId: userDropdownData.value,
+      voterId: currentUser.id,
+      notes,
+    };
+    submitVote(awardId, voteObject);
+  }
+
 
   render() {
     const { award } = this.props;
@@ -47,11 +69,15 @@ class VoteItem extends Component {
         </Card.Content>
         <Card.Content extra>
           <div className="mrgn_bt">
-            <DropdownSelection key={award.id} voters={voters} />
+            <DropdownSelection
+              key={award.id}
+              voters={voters}
+              setDropdownData={this.setDropdownData}
+            />
           </div>
-          <div className="ui input fluid mrgn_bt"><input type="text" placeholder="tell us why..." /></div>
+          <div className="ui input fluid mrgn_bt"><input onChange={this.handleFieldChange} type="text" placeholder="tell us why..." /></div>
           <div>
-            <Button className="ui fluid button positive">
+            <Button onClick={() => this.buildAndSubmitVote(award.id)} className="ui fluid button positive">
               Vote
             </Button>
           </div>
