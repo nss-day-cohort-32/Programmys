@@ -44,7 +44,9 @@ class App extends Component {
   updateCurrentUserVote(awardId) {
     const { currentUser } = this.state;
     const newUserState = { ...currentUser };
-    newUserState.votes.push(awardId);
+    if (newUserState.votes) {
+      newUserState.votes.push(awardId);
+    } else { newUserState.votes = [awardId]; }
     this.setState({ currentUser: newUserState });
   }
 
