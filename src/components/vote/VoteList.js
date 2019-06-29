@@ -13,7 +13,8 @@ class VoteList extends Component {
 
 
   componentDidMount() {
-    this.db.collection('cohorts/D32/awards').get()
+    const { currentUser } = this.props;
+    this.db.collection(`cohorts/${currentUser.cohortId}/awards`).get()
       .then((querySnapshot) => {
         const awards = querySnapshot.docs.map(doc => ({
           ...doc.data(),
@@ -42,8 +43,8 @@ class VoteList extends Component {
   }
 
   submitVote(awardId, voteObject) {
-    const { updateCurrentUserVote } = this.props;
-    this.db.collection(`cohorts/D32/awards/${awardId}/votes`).doc().set(voteObject);
+    const { currentUser, updateCurrentUserVote } = this.props;
+    this.db.collection(`cohorts/${currentUser.cohortId}/awards/${awardId}/votes`).doc().set(voteObject);
     updateCurrentUserVote(awardId);
   }
 
