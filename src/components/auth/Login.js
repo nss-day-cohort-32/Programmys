@@ -75,6 +75,7 @@ class Login extends Component {
         }
 
         profileUser = userSnapshot.data();
+        profileUser.id = userSnapshot.id;
         storeUser(profileUser);
         setCurrentUser(profileUser);
         history.push('vote/');
