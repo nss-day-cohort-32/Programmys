@@ -11,9 +11,11 @@ class Auth extends Component {
     return (
       <>
         <div className="auth_wrapper">
-          <h1 className="programmys_logo">the ProGrammys</h1>
-          <Login setCurrentUser={setCurrentUser} />
-          {/* <Link to="vote/">Vote Now</Link> */}
+          <div className="center_content">
+            <h1 className="programmys_logo">the ProGrammys</h1>
+            <Login setCurrentUser={setCurrentUser} />
+            {/* <Link to="vote/">Vote Now</Link> */}
+          </div>
         </div>
       </>
     );
