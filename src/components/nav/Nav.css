@@ -1,11 +1,36 @@
 .nav {
   background: rgb(61, 61, 61);
   color: rgb(243, 243, 243);
+  margin: auto;
+}
+
+
+.nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.nav li {
+  float: right;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 8px;
+  text-decoration: none;
+}
+
+.nav li:hover {
+  background-color: #111111;
 }
 
 .cohort_bar {
   background: rgb(236, 129, 7);
+  padding: 5px;
+}
+
+.cohort_font {
   color: rgba(255,
     255, 255, 0.9) !important;
-  padding: 5px;
 }

@@ -11,7 +11,6 @@ class VoteList extends Component {
     this.submitVote = this.submitVote.bind(this);
   }
 
-
   componentDidMount() {
     const { currentUser } = this.props;
     this.db.collection(`cohorts/${currentUser.cohortId}/awards`).get()
@@ -24,22 +23,12 @@ class VoteList extends Component {
       });
   }
 
-
   getUnvotedAwards() {
+    const { currentUser } = this.props;
     const { awards } = this.state;
-    return awards.filter((award) => {
-      const { currentUser } = this.props;
-      return !currentUser.votes
-        || !currentUser.votes.find(userVoted => userVoted === award.id);
-    });
-  }
 
-  getVotedAwards() {
-    const { awards } = this.state;
-    return awards.filter((award) => {
-      const { currentUser } = this.props;
-      return currentUser.votes.find(userVoted => userVoted === award.id);
-    });
+    return awards.filter(award => !currentUser.votes
+      || !currentUser.votes.find(userVoted => userVoted === award.id));
   }
 
   submitVote(awardId, voteObject) {
@@ -50,29 +39,21 @@ class VoteList extends Component {
 
   render() {
     const unvotedAwards = this.getUnvotedAwards();
-    // const votedAwards = this.getVotedAwards();
     const { currentUser } = this.props;
 
     return (
       <>
-        <h1>Awards</h1>
-        {unvotedAwards.map(award => (
-          <VoteItem
-            key={award.id}
-            award={award}
-            submitVote={this.submitVote}
-            currentUser={currentUser}
-          />
-        ))}
-        {/* <h2>Vote history</h2>
-        {votedAwards.map(award => (
-          <VoteItem
-            key={award.id}
-            award={award}
-            submitVote={this.submitVote}
-            currentUser={currentUser}
-          />
-        ))} */}
+        <div className="center_content">
+          <h1>Awards</h1>
+          {unvotedAwards.map(award => (
+            <VoteItem
+              key={award.id}
+              award={award}
+              submitVote={this.submitVote}
+              currentUser={currentUser}
+            />
+          ))}
+        </div>
       </>
     );
   }

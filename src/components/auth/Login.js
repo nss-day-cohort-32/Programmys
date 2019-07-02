@@ -101,7 +101,7 @@ class Login extends Component {
     const { cohortOptions, cohortId, needsProfileInfo } = this.state;
     return (
       <>
-        <section className="auth_wrapper">
+        <section className="auth_select">
           {
             needsProfileInfo ? (
               <Dropdown
