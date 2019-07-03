@@ -33,8 +33,8 @@ class VoteList extends Component {
 
   submitVote(awardId, voteObject) {
     const { currentUser, updateCurrentUserVote } = this.props;
-    this.db.collection(`cohorts/${currentUser.cohortId}/awards/${awardId}/votes`).doc().set(voteObject);
-    updateCurrentUserVote(awardId);
+    this.db.collection(`cohorts/${currentUser.cohortId}/awards/${awardId}/votes`).doc().set(voteObject)
+      .then(() => updateCurrentUserVote(awardId));
   }
 
   render() {
