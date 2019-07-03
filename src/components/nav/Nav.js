@@ -40,25 +40,18 @@ class Nav extends Component {
       <>
         <div className="nav">
           <ul>
-            <li>NSS</li>
-            {
-              /* I'm ignoring eslint a11y rules for now
-              because I'm assuming Bryan
-              is going to change the nav */
-            }
-            {/* eslint-disable-next-line */}
-            <li onClick={this.logout}>Logout</li>
+            <li><Link to="/" onClick={this.logout}>Logout</Link></li>
             <li><Link to="/vote">Vote</Link></li>
             <li><Link to="/vote/addAward">Add Award</Link></li>
           </ul>
-          <h1>The Programmys</h1>
+          <h1 className="programmys_logo">the ProGrammys</h1>
           <div className="cohort_bar">
-
-            <Header as="h2" className="cohort_bar">
-              <Image circular src={cohort.icon} size="tiny" verticalAlign="bottom" />
-              {cohort.name}
-            </Header>
-
+            <div className="center_content">
+              <Header as="h2" className="cohort_font">
+                <Image circular src={cohort.icon} size="tiny" verticalAlign="bottom" />
+                {cohort.name}
+              </Header>
+            </div>
           </div>
         </div>
       </>

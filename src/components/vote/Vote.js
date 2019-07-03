@@ -4,7 +4,7 @@ import VoteList from './VoteList';
 import CreateAward from './CreateAward';
 import Nav from '../nav/Nav';
 
-const Vote = ({ currentUser, setCurrentUser }) => (
+const Vote = ({ currentUser, setCurrentUser, updateCurrentUserVote }) => (
   <>
     <Nav
       currentUser={currentUser}
@@ -18,7 +18,13 @@ const Vote = ({ currentUser, setCurrentUser }) => (
     <Route
       exact
       path="/vote/"
-      render={props => <VoteList currentUser={currentUser} {...props} />
+      render={props => (
+        <VoteList
+          currentUser={currentUser}
+          updateCurrentUserVote={updateCurrentUserVote}
+          {...props}
+        />
+      )
       }
     />
 

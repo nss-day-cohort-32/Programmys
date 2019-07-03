@@ -1,4 +1,37 @@
 .auth_wrapper {
-  width: 400px;
-  margin: auto
+  background: rgb(61, 61, 61);
+  margin: auto;
+  text-align: center;
+  height: 100vh;
+}
+
+.auth_select {
+  margin: auto;
+}
+
+.logo_wrapper {
+  margin: auto;
+  text-align: center;
+  background-color: white;
+  border-bottom: 5px solid rgb(0, 0, 0)
+}
+
+.nss_logo {
+  width: 300px;
+  text-align: center;
+  margin: 5px;
+}
+
+.programmys_logo {
+  text-align: center;
+  font-family: 'Josefin Sans', sans-serif;
+  color: whitesmoke;
+  font-size: 4em;
+  text-shadow: -4px 4px rgba(0, 0, 0, .8);
+}
+
+
+.center_content {
+  width: 500px;
+  margin: auto;
 }

@@ -75,6 +75,7 @@ class Login extends Component {
         }
 
         profileUser = userSnapshot.data();
+        profileUser.id = userSnapshot.id;
         storeUser(profileUser);
         setCurrentUser(profileUser);
         history.push('vote/');
@@ -100,7 +101,7 @@ class Login extends Component {
     const { cohortOptions, cohortId, needsProfileInfo } = this.state;
     return (
       <>
-        <section className="auth_wrapper">
+        <section className="auth_select">
           {
             needsProfileInfo ? (
               <Dropdown
