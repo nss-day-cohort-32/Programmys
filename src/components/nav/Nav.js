@@ -40,13 +40,7 @@ class Nav extends Component {
       <>
         <div className="nav">
           <ul>
-            {
-              /* I'm ignoring eslint a11y rules for now
-              because I'm assuming Bryan
-              is going to change the nav */
-            }
-            {/* eslint-disable-next-line */}
-            <li onClick={this.logout}>Logout</li>
+            <li><Link to="/" onClick={this.logout}>Logout</Link></li>
             <li><Link to="/vote">Vote</Link></li>
             <li><Link to="/vote/addAward">Add Award</Link></li>
           </ul>
