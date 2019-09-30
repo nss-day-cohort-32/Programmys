@@ -48,6 +48,7 @@ class VoteItem extends Component {
     submitVote(awardId, voteObject);
   }
 
+  // ! disable vote button unless nominee selected
 
   render() {
     const { award } = this.props;

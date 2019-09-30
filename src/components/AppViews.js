@@ -29,9 +29,11 @@ const AppViews = ({ currentUser, setCurrentUser, updateCurrentUserVote }) => (
         <Redirect to="/" />
       ))}
     />
+    {/* create a 404 component to redirect to below */}
     <Route
       path="/admin"
-      render={props => <AdminViews {...props} />}
+      render={props => (currentUser.isInstructor
+        ? <AdminViews {...props} /> : <Redirect to="/" />)}
     />
   </React.Fragment>
 );

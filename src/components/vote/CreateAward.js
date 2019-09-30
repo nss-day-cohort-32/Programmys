@@ -68,6 +68,8 @@ class CreateAward extends Component {
       .set(payload)
       .then(() => history.push('/vote'));
   }
+  // ! disable submit unless both fields completed
+  // TODO add max length to input fields
 
   render() {
     return (
